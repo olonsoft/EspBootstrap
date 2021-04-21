@@ -159,7 +159,7 @@ void EspBootstrapDict::handleRoot() {
   iServer->sendContent("<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/></head><body>");
 
   Dictionary& d = *iDict;
-  snprintf(buf, BUFLEN, "<h2 style=\"color:blue;\">%s</h2><form action=\"/submit.html\">", d[0].c_str() );
+  snprintf(buf, BUFLEN, "<h2 style=\"color:blue;\">%s</h2><form action=\"/submit.html\" method=\"post\">", d[0].c_str() );
   iServer->sendContent(buf);
 
   for (int i = 1; i <= iNum; i++) {
