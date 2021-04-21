@@ -80,6 +80,41 @@ void printConfig() {
   _PL();
 }
 
+// This method prepares for WiFi connection
+void setupWifi(const char* ssid, const char* pwd) {
+  _PL("Setup_wifi()");
+
+  // We start by connecting to a WiFi network
+  _PL("Connecting to WiFi...");
+  // clear wifi config
+  WiFi.disconnect();
+
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, pwd);
+}
+
+// This method waits for a WiFi connection for aTimeout milliseconds.
+bool waitForWifi(unsigned long aTimeout) {
+  _PL("WaitForWifi()");
+
+  unsigned long timeNow = millis();
+
+  while ( WiFi.status() != WL_CONNECTED ) {
+    delay(1000);
+    _PP(".");
+    if ( millis() - timeNow > aTimeout ) {
+      _PL(" WiFi connection timeout");
+      return true;
+    }
+  }
+
+  _PL(" WiFi connected");
+  _PP("IP address: "); _PL(WiFi.localIP());
+  _PP("SSID: "); _PL(WiFi.SSID());
+  _PP("mac: "); _PL(WiFi.macAddress());
+  return false;
+}
+
 
 
 // Arduino SETUP method
@@ -220,37 +255,3 @@ void loop(void) {
 
 }
 
-// This method prepares for WiFi connection
-void setupWifi(const char* ssid, const char* pwd) {
-  _PL("Setup_wifi()");
-
-  // We start by connecting to a WiFi network
-  _PL("Connecting to WiFi...");
-  // clear wifi config
-  WiFi.disconnect();
-
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, pwd);
-}
-
-// This method waits for a WiFi connection for aTimeout milliseconds.
-bool waitForWifi(unsigned long aTimeout) {
-  _PL("WaitForWifi()");
-
-  unsigned long timeNow = millis();
-
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay(1000);
-    _PP(".");
-    if ( millis() - timeNow > aTimeout ) {
-      _PL(" WiFi connection timeout");
-      return true;
-    }
-  }
-
-  _PL(" WiFi connected");
-  _PP("IP address: "); _PL(WiFi.localIP());
-  _PP("SSID: "); _PL(WiFi.SSID());
-  _PP("mac: "); _PL(WiFi.macAddress());
-  return false;
-}

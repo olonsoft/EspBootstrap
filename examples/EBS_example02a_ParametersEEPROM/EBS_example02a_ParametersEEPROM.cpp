@@ -21,6 +21,24 @@ const int NPARS_BTS = 3;
 
 // ==== CODE ==============================
 
+void setupWifi(const char* ssid, const char* pwd) {
+  WiFi.disconnect();
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, pwd);
+}
+
+bool waitForWifi(unsigned long aTimeout) {
+  unsigned long timeNow = millis();
+
+  while ( WiFi.status() != WL_CONNECTED ) {
+    delay(500);
+    if ( millis() - timeNow > aTimeout ) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void setup(void) {
   int rc;
   bool wifiTimeout;
@@ -54,22 +72,4 @@ void setup(void) {
 }
 
 void loop(void) {
-}
-
-void setupWifi(const char* ssid, const char* pwd) {
-  WiFi.disconnect();
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, pwd);
-}
-
-bool waitForWifi(unsigned long aTimeout) {
-  unsigned long timeNow = millis();
-
-  while ( WiFi.status() != WL_CONNECTED ) {
-    delay(500);
-    if ( millis() - timeNow > aTimeout ) {
-      return true;
-    }
-  }
-  return false;
 }
