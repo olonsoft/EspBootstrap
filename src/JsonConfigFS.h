@@ -37,20 +37,23 @@
 
 #if defined( ARDUINO_ARCH_ESP8266 )
 #include <FS.h>
+#include <LittleFS.h>
+#define ESP_FS LittleFS
 #endif
 
 #if defined( ARDUINO_ARCH_ESP32 )
 #include <FS.h>
-#include <SPIFFS.h>
+#include <LITTLEFS.h>
+#define ESP_FS LITTLEFS
 #endif
 
 #define JSON_FILERR  (-95)
 #define JSON_FILENE  (-96)
 
-class JsonConfigSPIFFS : public JsonConfigBase {
+class JsonConfigFS : public JsonConfigBase {
   public:
-    JsonConfigSPIFFS();
-    virtual ~JsonConfigSPIFFS();
+    JsonConfigFS();
+    virtual ~JsonConfigFS();
 
     int8_t   parse(const String aUrl, Dictionary& aDict, int aNum = 0);
 
@@ -65,25 +68,25 @@ class JsonConfigSPIFFS : public JsonConfigBase {
 };
 
 #ifndef _JSONCONFIG_NOSTATIC
-static JsonConfigSPIFFS JSONConfig;
+static JsonConfigFS JSONConfig;
 #endif
 
-JsonConfigSPIFFS::JsonConfigSPIFFS() {
-  //  SPIFFS.begin();
+JsonConfigFS::JsonConfigFS() {
+  //  ESP_FS.begin();
 }
 
-JsonConfigSPIFFS::~JsonConfigSPIFFS() {
-  //  SPIFFS.end();
+JsonConfigFS::~JsonConfigFS() {
+  //  ESP_FS.end();
 }
 
-int8_t JsonConfigSPIFFS::parse(const String aUrl, Dictionary& aDict, int aNum) {
+int8_t JsonConfigFS::parse(const String aUrl, Dictionary& aDict, int aNum) {
   int8_t rc; 
   
-  if ( !SPIFFS.exists(aUrl) ) { // || !SPIFFS.isFile(aUrl) ) {
+  if ( !ESP_FS.exists(aUrl) ) { // || !SPIFFS.isFile(aUrl) ) {
     return JSON_FILENE;
   }
 
-  iF = SPIFFS.open(aUrl, "r");
+  iF = ESP_FS.open(aUrl, "r");
   if ( !iF ) {
     return JSON_FILERR;
   }
@@ -96,12 +99,12 @@ int8_t JsonConfigSPIFFS::parse(const String aUrl, Dictionary& aDict, int aNum) {
 }
 
 
-int16_t    JsonConfigSPIFFS::_nextChar() {
+int16_t    JsonConfigFS::_nextChar() {
     return (int16_t) iF.read();
 }
 
 
-int8_t  JsonConfigSPIFFS::_storeKeyValue(const char* aKey, const char* aValue){
+int8_t  JsonConfigFS::_storeKeyValue(const char* aKey, const char* aValue){
 #ifdef _LIBDEBUG_
     Serial.printf("JsonConfigSPIFFS::_storeKeyValue: %s:%s\n", aKey, aValue );
 #endif

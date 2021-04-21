@@ -70,7 +70,7 @@ int8_t JsonConfigBase::_doParse(size_t aLen, uint16_t aNum) {
   String    currentKey = String();
   String    currentValue = String();
 
-  for (int i = 0; i < aLen; i++) {
+  for (size_t i = 0; i < aLen; i++) {
     char c;
     int16_t nrc = _nextChar();
     if ( nrc < 0 ) break; //EOF

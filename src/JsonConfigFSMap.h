@@ -28,19 +28,22 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef _JSONCONFIGSPIFFSMAP_H_
-#define _JSONCONFIGSPIFFSMAP_H_
+#ifndef _JsonConfigFSMap_H_
+#define _JsonConfigFSMap_H_
 
 
 #include <JsonConfigBase.h>
 
 #if defined( ARDUINO_ARCH_ESP8266 )
 #include <FS.h>
+#include <LittleFS.h>
+#define ESP_FS LittleFS
 #endif
 
 #if defined( ARDUINO_ARCH_ESP32 )
 #include <FS.h>
-#include <SPIFFS.h>
+#include <LITTLEFS.h>
+#define ESP_FS LITTLEFS
 #endif
 
 
@@ -48,10 +51,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #define JSON_FILENE  (-96)
 
 
-class JsonConfigSPIFFSMap : public JsonConfigBase {
+class JsonConfigFSMap : public JsonConfigBase {
   public:
-    JsonConfigSPIFFSMap();
-    virtual ~JsonConfigSPIFFSMap();
+    JsonConfigFSMap();
+    virtual ~JsonConfigFSMap();
     
     int8_t   parse(const String aUrl, char** aMap, int aNum);
     
@@ -67,20 +70,20 @@ class JsonConfigSPIFFSMap : public JsonConfigBase {
 };
 
 #ifndef _JSONCONFIG_NOSTATIC
-static JsonConfigSPIFFSMap JSONConfig;
+static JsonConfigFSMap JSONConfig;
 #endif
 
-JsonConfigSPIFFSMap::JsonConfigSPIFFSMap() {}
-JsonConfigSPIFFSMap::~JsonConfigSPIFFSMap() {}
+JsonConfigFSMap::JsonConfigFSMap() {}
+JsonConfigFSMap::~JsonConfigFSMap() {}
 
-int8_t JsonConfigSPIFFSMap::parse(const String aUrl, char** aMap, int aNum) {
+int8_t JsonConfigFSMap::parse(const String aUrl, char** aMap, int aNum) {
   int8_t rc; 
   
-  if ( !SPIFFS.exists(aUrl) ) { // || !SPIFFS.isFile(aUrl) ) {
+  if ( !ESP_FS.exists(aUrl) ) { // || !ESP_FS.isFile(aUrl) ) {
     return JSON_FILENE;
   }
 
-  iF = SPIFFS.open(aUrl, "r");
+  iF = ESP_FS.open(aUrl, "r");
   if ( !iF ) {
     return JSON_FILERR;
   }
@@ -93,15 +96,13 @@ int8_t JsonConfigSPIFFSMap::parse(const String aUrl, char** aMap, int aNum) {
   return rc;
 }
 
-
-char    JsonConfigSPIFFSMap::_nextChar() {
+int16_t JsonConfigFSMap::_nextChar() {
     return (int16_t) iF.read();
 }
 
-
-int8_t  JsonConfigSPIFFSMap::_storeKeyValue(const char* aKey, const char* aValue){
+int8_t  JsonConfigFSMap::_storeKeyValue(const char* aKey, const char* aValue){
     strcpy(iMap[iParamIndex++], aValue);
     return JSON_OK;
 }
 
-#endif // _JSONCONFIGSPIFFSMAP_H_
+#endif // _JsonConfigFSMap_H_

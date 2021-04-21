@@ -1,5 +1,5 @@
-#ifndef _PARAMETERSSPIFFS_H_
-#define _PARAMETERSSPIFFS_H_
+#ifndef _ParametersFS_H_
+#define _ParametersFS_H_
 
 /*
   Copyright (c) 2015-2020, Anatoli Arkhipenko.
@@ -33,14 +33,14 @@
 
 #include <ParametersBase.h>
 #include <Dictionary.h>
-#include <JsonConfigSPIFFS.h>
+#include <JsonConfigFS.h>
 
 #define PARAMS_FER  (-6)
 
-class ParametersSPIFFS : public ParametersBase {
+class ParametersFS : public ParametersBase {
   public:
-    ParametersSPIFFS(const String& aToken, Dictionary& aDict ) ;
-    virtual ~ParametersSPIFFS();
+    ParametersFS(const String& aToken, Dictionary& aDict ) ;
+    virtual ~ParametersFS();
 
     virtual int8_t  begin();
     virtual int8_t  load();
@@ -54,12 +54,12 @@ class ParametersSPIFFS : public ParametersBase {
     String          iFile;
 };
 
-ParametersSPIFFS::ParametersSPIFFS(const String& aToken, Dictionary& aDict ) : ParametersBase(aToken), iDict(aDict)  {
+ParametersFS::ParametersFS(const String& aToken, Dictionary& aDict ) : ParametersBase(aToken), iDict(aDict)  {
   iActive = false;
 }
 
 
-ParametersSPIFFS::~ParametersSPIFFS() {
+ParametersFS::~ParametersFS() {
   if (iActive) {
     save();
     iActive = false;
@@ -67,17 +67,17 @@ ParametersSPIFFS::~ParametersSPIFFS() {
 }
 
 
-int8_t ParametersSPIFFS::begin() {
+int8_t ParametersFS::begin() {
   iActive = true;
   iFile = String("/") + iToken + ".json";
 #ifdef _LIBDEBUG_
-  Serial.printf("ParametersSPIFFS: config file = %s\n", iFile.c_str());
+  Serial.printf("ParametersFS: config file = %s\n", iFile.c_str());
 #endif
   return PARAMS_OK;
 }
 
 
-int8_t ParametersSPIFFS::load() {
+int8_t ParametersFS::load() {
 //  uint16_t iTl = iToken.length();
 
   if (!iActive) {
@@ -87,7 +87,7 @@ int8_t ParametersSPIFFS::load() {
 }
 
 
-int8_t ParametersSPIFFS::save() {
+int8_t ParametersFS::save() {
   if (!iActive) {
     return PARAMS_ACT;
   }
@@ -114,8 +114,8 @@ int8_t ParametersSPIFFS::save() {
 }
 
 
-void ParametersSPIFFS::clear () {
-  SPIFFS.remove(iFile);
+void ParametersFS::clear () {
+  ESP_FS.remove(iFile);
 }
 
-#endif // _PARAMETERSSPIFFS_H_
+#endif // _ParametersFS_H_

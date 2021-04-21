@@ -38,20 +38,20 @@ POSSIBILITY OF SUCH DAMAGE.
 
 class EspBootstrapDict : public EspBootstrapBase {
   public:
-    EspBootstrapDict();
-    virtual ~EspBootstrapDict();
-
-    int8_t    run(Dictionary &aDict, uint8_t aNum = 0, uint32_t aTimeout = 10 * BOOTSTRAP_MINUTE);
-    void      handleRoot ();
-    void      handleSubmit ();
+                EspBootstrapDict();
+    virtual    ~EspBootstrapDict();
+  
+    int8_t      run(Dictionary &aDict, uint8_t aNum = 0, uint32_t aTimeout = 10 * BOOTSTRAP_MINUTE);
+    void        handleRoot ();
+    void        handleSubmit ();
     inline void cancel() { iCancelAP = true; } ;
     
 
   private:
-    int8_t            doRun();
+    int8_t      doRun();
 
-    bool              iCancelAP;
-    Dictionary*       iDict;
+    bool        iCancelAP;
+    Dictionary* iDict;
 
 };
 

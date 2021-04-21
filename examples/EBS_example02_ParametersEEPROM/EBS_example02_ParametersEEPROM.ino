@@ -23,11 +23,10 @@
 // These two defines MUST be placed before the header files
 // to be taken into account by the library
 
-#define  EEPROM_MAX 4096
+#define EEPROM_MAX 4096
 #define CTOKEN  "EBS2"
 
 #define _DEBUG_
-//#define _TEST_
 
 #ifdef _DEBUG_
 #define _PP(a) Serial.print(a);
@@ -86,7 +85,7 @@ void printConfig() {
 // Arduino SETUP method
 void setup(void) {
   int rc;
-  bool wifiTimeout;
+  bool wifiTimeout = false;
 
   // Setting up Serial console
 #ifdef _DEBUG_
