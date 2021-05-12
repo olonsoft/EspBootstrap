@@ -70,7 +70,7 @@ Params eg;
 // You can supply default values for the parameters
 // Which will be loaded into the structure in case
 // of bad crc or token mismatch
-// You can provide NULL pointer instead of Defaults
+// You can provide nullptr pointer instead of Defaults
 // In that case the sctructure will be filled with zeros
 Params defaults = { CTOKEN,
                     "<wifi ssid>",
@@ -149,7 +149,7 @@ void setup(void) {
   // To work with Parameters we need to instanciate a Paramters object.
   //  first parameter is a reference to the token, {String}
   //  second parameter  is a pointer to the parameters variable {Params}
-  //  third parameter is a pointer to the defaults {cahr **}, or NULL if no defaults
+  //  third parameter is a pointer to the defaults {cahr **}, or nullptr if no defaults
   //  fourth parameter  is the starting address in the EEPROM memory, {int}
   //  fifth parameter is a size of parameters structure
   ParametersEEPROMMap *p_ptr = new ParametersEEPROMMap(TOKEN, &eg, &defaults, 0, sizeof(Params));
