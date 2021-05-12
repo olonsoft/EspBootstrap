@@ -38,13 +38,13 @@
 #if defined( ARDUINO_ARCH_ESP8266 )
 #include <FS.h>
 #include <LittleFS.h>
-#define ESP_FS LittleFS
+#define FILESYSTEM LittleFS
 #endif
 
 #if defined( ARDUINO_ARCH_ESP32 )
 #include <FS.h>
 #include <LITTLEFS.h>
-#define ESP_FS LITTLEFS
+#define FILESYSTEM LITTLEFS
 #endif
 
 #define JSON_FILERR  (-95)
@@ -82,7 +82,7 @@ JsonConfigFS::~JsonConfigFS() {
 int8_t JsonConfigFS::parse(const String aUrl, Dictionary& aDict, int aNum) {
   int8_t rc; 
   
-  if ( !ESP_FS.exists(aUrl) ) { // || !SPIFFS.isFile(aUrl) ) {
+  if ( !ESP_FS.exists(aUrl) ) { // || !LittleFS.isFile(aUrl) ) {
     return JSON_FILENE;
   }
 

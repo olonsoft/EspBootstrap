@@ -120,7 +120,7 @@ int8_t EspBootstrapDict::doRun() {
   yield();
 
   iServer = new WebServer(80);
-  if (iServer == NULL) return BOOTSTRAP_ERR;
+  if (iServer == nullptr) return BOOTSTRAP_ERR;
 
   iServer->on("/submit.html", __espbootstrap_handlesubmit);
   iServer->onNotFound(__espbootstrap_handleroot);
@@ -135,7 +135,7 @@ int8_t EspBootstrapDict::doRun() {
         iServer->stop();
         iServer->close();
         delete iServer;
-        iServer = NULL;
+        iServer = nullptr;
         return BOOTSTRAP_TIMEOUT;
     }
     delay(10);
@@ -145,7 +145,7 @@ int8_t EspBootstrapDict::doRun() {
   iServer->stop();
   iServer->close();
   delete iServer;
-  iServer = NULL;
+  iServer = nullptr;
   return (iCancelAP ? BOOTSTRAP_CANCEL: BOOTSTRAP_OK);
 }
 

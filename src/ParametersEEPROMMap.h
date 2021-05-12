@@ -50,7 +50,7 @@
 
 class ParametersEEPROMMap : public ParametersBase {
   public:
-    ParametersEEPROMMap( const String& aToken, void* aPtr, void* aDeflt = NULL, uint16_t aAddress = 0, uint16_t aLength = (EEPROM_MAX-1) );
+    ParametersEEPROMMap( const String& aToken, void* aPtr, void* aDeflt = nullptr, uint16_t aAddress = 0, uint16_t aLength = (EEPROM_MAX-1) );
     virtual ~ParametersEEPROMMap();
 
     virtual int8_t  begin();

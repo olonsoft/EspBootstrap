@@ -92,7 +92,7 @@ int8_t ParametersFS::save() {
     return PARAMS_ACT;
   }
 
-  File f = SPIFFS.open(iFile, "w");
+  File f = FILESYSTEM.open(iFile, "w");
   if ( !f ) {
     return PARAMS_FER;
   }

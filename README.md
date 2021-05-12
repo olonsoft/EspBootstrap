@@ -126,7 +126,7 @@ See example #1 for implementation details.
 #### Dictionary-based parameters, SPIFFS filesystem, storage
 
 ```C++
-#include <ParametersSPIFFS.h>
+#include <ParametersFS.h>
 #include <EspBootstrapDict.h>
 ```
 

@@ -12,7 +12,7 @@
 #define SSID1 "YOUR WIFI SSID HERE"
 #define PWD1  "YOUR WIFI PASSWORD HERE"
 
-#include <ParametersSPIFFS.h>
+#include <ParametersFS.h>
 #include <EspBootstrapDict.h>
 
 const String TOKEN(CTOKEN);
@@ -30,10 +30,10 @@ void setup(void) {
   d("password", PWD1);
   d("test4", "This is a test");
 
-  SPIFFS.begin();
+  FILESYSTEM.begin();
 
-  ParametersSPIFFS *p_ptr = new ParametersSPIFFS(TOKEN, d);
-  ParametersSPIFFS& p = *p_ptr;
+  ParametersFS *p_ptr = new ParametersFS(TOKEN, d);
+  ParametersFS& p = *p_ptr;
 
   rc = p.begin();
   rc = p.load();
@@ -51,7 +51,7 @@ void setup(void) {
     ESP.restart();
   }
 
-  SPIFFS.end();
+  FILESYSTEM.end();
 }
 
 void loop(void) {

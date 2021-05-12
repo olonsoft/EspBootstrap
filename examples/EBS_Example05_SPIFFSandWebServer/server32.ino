@@ -1,13 +1,22 @@
 #if defined( ARDUINO_ARCH_ESP32 )
 
 
-#define FILESYSTEM SPIFFS
-// You only need to format the filesystem once
+#if defined( ARDUINO_ARCH_ESP8266 )
+#include <FS.h>
+#include <LittleFS.h>
+#define FILESYSTEM LittleFS
+#endif
+
+#if defined( ARDUINO_ARCH_ESP32 )
+#include <FS.h>
+#include <LITTLEFS.h>
+#define FILESYSTEM LITTLEFS
+#endif
+
+
+// You only need to format the FILESYSTEM once
 #define FORMAT_FILESYSTEM false
 #define Serial Serial
-
-#include <SPIFFS.h>
-
 
 //format bytes
 String formatBytes(size_t bytes) {

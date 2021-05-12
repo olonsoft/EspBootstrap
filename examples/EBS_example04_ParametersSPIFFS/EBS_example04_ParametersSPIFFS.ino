@@ -36,7 +36,7 @@
 #endif
 
 // ==== Includes ===================================
-#include <ParametersSPIFFS.h>
+#include <ParametersFS.h>
 #include <EspBootstrapDict.h>
 
 // ==== Parameters and BootStrap ===================
@@ -122,7 +122,7 @@ void setup(void) {
   // Activation of the file system is the responsibility of the programmer
   // You may be using filesystem for other purposes, so the library should
   // not turn it on or off.
-  SPIFFS.begin();
+  FILESYSTEM.begin();
   
   // **** PARAMETERS COMPONENT OF ESPBOOTSTRAP LIBRARY ****
   // ======================================================
@@ -131,8 +131,8 @@ void setup(void) {
   //  second parameter  is a reference to the dictionary object holding parameters {Dictionary}
   //  Since parameters are stored in a json file in the SPIFFS file system, the size of the file
   //  does not matter.
-  ParametersSPIFFS *p_ptr = new ParametersSPIFFS(TOKEN, d);
-  ParametersSPIFFS& p = *p_ptr;
+  ParametersFS *p_ptr = new ParametersFS(TOKEN, d);
+  ParametersFS& p = *p_ptr;
 
   rc = p.begin();
   _PP("EspBootStrap ParametersSPIFFS initialized. rc = "); _PL(rc);
@@ -190,7 +190,7 @@ void setup(void) {
   printConfig();
 
   // Continue with other setup() activities
-  SPIFFS.end();
+  FILESYSTEM.end();
 }
 
 void loop(void) {

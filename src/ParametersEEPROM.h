@@ -75,7 +75,7 @@ ParametersEEPROM::ParametersEEPROM(const String& aToken, Dictionary& aDict, uint
   iActive = false;
   iAddress = aAddress;
   iSize = aSize;
-  iData = NULL;
+  iData = nullptr;
 }
 
 
@@ -91,7 +91,7 @@ ParametersEEPROM::~ParametersEEPROM() {
 
 
 int8_t ParametersEEPROM::begin() {
-  uint16_t maxLen = iToken.length() + iDict.esize() + 4; // 4: 1 null for token, 1 crc8, 2 bytes for count
+  uint16_t maxLen = iToken.length() + iDict.esize() + 4; // 4: 1 nullptr for token, 1 crc8, 2 bytes for count
   if ( iSize < EEPROM_MAX && maxLen <= iSize) {
 #if defined( ARDUINO_ARCH_ESP8266 ) || defined( ARDUINO_ARCH_ESP32 )
     EEPROM.begin(4096); // allocate all memory
@@ -113,7 +113,7 @@ int8_t ParametersEEPROM::load() {
   }
 
   iData = (uint8_t * ) malloc(iSize);
-  if (iData == NULL) {
+  if (iData == nullptr) {
     //    iRc = PARAMS_MEM;
     return PARAMS_MEM;
   }
@@ -127,14 +127,14 @@ int8_t ParametersEEPROM::load() {
   // Check CRC
   if (crc != checksum () ) {
     free(iData);
-    iData = NULL;
+    iData = nullptr;
     return PARAMS_CRC;
   }
 
   // Check Token
   if ( strncmp( (const char *) iToken.c_str(), (const char *) iData, iSize ) != 0 ) {
     free(iData);
-    iData = NULL;
+    iData = nullptr;
     return PARAMS_TOK;
   }
 
@@ -153,11 +153,11 @@ int8_t ParametersEEPROM::load() {
   }
 
   free(iData);
-  iData = NULL;
+  iData = nullptr;
   return PARAMS_OK;
   //  if ( iMode == PARAMS_FILE ) {
   //    String file = "/" + iToken + ".json";
-  //    if ( !SPIFFS.exists(file) ) {
+  //    if ( !LittleFS.exists(file) ) {
   //      return PARAMS_FDE;
   //    }
   //  }
@@ -181,7 +181,7 @@ int8_t ParametersEEPROM::save() {
     return PARAMS_LEN;
   }
   iData = (uint8_t * ) malloc(iSize);
-  if (iData == NULL) {
+  if (iData == nullptr) {
     return PARAMS_MEM;
   }
   clear();
@@ -265,7 +265,7 @@ int8_t ParametersEEPROM::save() {
 
 
   free(iData);
-  iData = NULL;
+  iData = nullptr;
 
 #ifdef _LIBDEBUG_
   Serial.println ("Parameters save: memory freed");

@@ -28,7 +28,7 @@
 
 
 // ==== Includes ===================================
-#include <ParametersSPIFFS.h>
+#include <ParametersFS.h>
 #include <EspBootstrapDict.h>
 // Includes for running the webserver
 // SPIFFS browsing example.
@@ -100,7 +100,7 @@ void setup(void) {
 #endif
 
   //  The sketch is responsible for activating SPIFFS
-  SPIFFS.begin();
+  FILESYSTEM.begin();
 
   // Populate the dictionary with test values
   d("This", "is test");

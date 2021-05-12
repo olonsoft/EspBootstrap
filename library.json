@@ -1,6 +1,6 @@
 {
   "name":"EspBootstrap",
-  "description":"Library helps bring new esp devices online and connected into ecosystem. Read and parse config from json files on the web or SPIFFS.",
+  "description":"Library helps bring new esp devices online and connected into ecosystem. Read and parse config from json files on the web or LittleFS.",
   "keywords":"eeprom,iot,wifi,config,json,parse",
   "authors":
   {
