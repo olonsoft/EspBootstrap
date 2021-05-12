@@ -126,6 +126,8 @@ void setup(void) {
 #ifdef _DEBUG_
   Serial.begin(115200);
   delay(500);
+  WiFi.persistent(false);
+  WiFi.setAutoReconnect(true);
   {
     _PL("EspBootStrap Dict Example"); _PL();
 #if defined( ARDUINO_ARCH_ESP8266 )
@@ -251,7 +253,28 @@ void setup(void) {
   if (rc == 0) p.save();
 }
 
-void loop(void) {
-
+void checkWiFi() {
+  static uint32_t lastTimeConnected = 0;
+  static bool connected = true;
+  if (WiFi.status() != WL_CONNECTED) {
+    if (connected){
+      connected = false;
+      _PL("Disconnected.");
+    }
+    if (millis() - lastTimeConnected > 30000UL) {
+      _PL("Can not Reconnect to WiFi. Rebooting...");
+      ESP.restart();
+      delay(1000);
+    }
+  } else {
+    lastTimeConnected = millis();
+    if (!connected) {
+      connected = true;
+      _PL("Reconnected.");
+    }
+  }
 }
 
+void loop(void) {
+  checkWiFi();
+}
