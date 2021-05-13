@@ -56,9 +56,9 @@ public:
   ParametersEEPROM(const String & aToken, Dictionary & aDict, uint16_t aAddress, uint16_t aSize ) ;
   virtual ~ParametersEEPROM();
 
-  virtual int8_t  begin();
-  virtual int8_t  load();
-  virtual int8_t  save();
+  virtual ParametersResult  begin();
+  virtual ParametersResult  load();
+  virtual ParametersResult  save();
   
   void            clear();
 
@@ -90,32 +90,32 @@ ParametersEEPROM::~ParametersEEPROM() {
 }
 
 
-int8_t ParametersEEPROM::begin() {
+ParametersResult ParametersEEPROM::begin() {
   uint16_t maxLen = iToken.length() + iDict.esize() + 4; // 4: 1 nullptr for token, 1 crc8, 2 bytes for count
   if ( iSize < EEPROM_MAX && maxLen <= iSize) {
 #if defined( ARDUINO_ARCH_ESP8266 ) || defined( ARDUINO_ARCH_ESP32 )
     EEPROM.begin(4096); // allocate all memory
 #endif
     iActive = true;
-    return PARAMS_OK;
+    return ParametersResult::ParamsOk;
   }
   else {
-    return PARAMS_LEN;
+    return ParametersResult::ParamsLen;
   }
 }
 
 
-int8_t ParametersEEPROM::load() {
+ParametersResult ParametersEEPROM::load() {
   uint16_t iTl = iToken.length();
 
   if (!iActive) {
-    return PARAMS_ACT;
+    return ParametersResult::ParamsAct;
   }
 
   iData = (uint8_t * ) malloc(iSize);
   if (iData == nullptr) {
     //    iRc = PARAMS_MEM;
-    return PARAMS_MEM;
+    return ParametersResult::ParamsMem;
   }
   uint8_t* p = iData;
 
@@ -128,14 +128,14 @@ int8_t ParametersEEPROM::load() {
   if (crc != checksum () ) {
     free(iData);
     iData = nullptr;
-    return PARAMS_CRC;
+    return ParametersResult::ParamsCRC;
   }
 
   // Check Token
   if ( strncmp( (const char *) iToken.c_str(), (const char *) iData, iSize ) != 0 ) {
     free(iData);
     iData = nullptr;
-    return PARAMS_TOK;
+    return ParametersResult::ParamsTok;
   }
 
   // Populate the dictionary
@@ -154,7 +154,7 @@ int8_t ParametersEEPROM::load() {
 
   free(iData);
   iData = nullptr;
-  return PARAMS_OK;
+  return ParametersResult::ParamsOk;
   //  if ( iMode == PARAMS_FILE ) {
   //    String file = "/" + iToken + ".json";
   //    if ( !LittleFS.exists(file) ) {
@@ -164,12 +164,12 @@ int8_t ParametersEEPROM::load() {
 }
 
 
-int8_t ParametersEEPROM::save() {
+ParametersResult ParametersEEPROM::save() {
   uint8_t changed = 0;
-  int8_t  rc = PARAMS_OK;
+  ParametersResult  rc = ParametersResult::ParamsOk;
   
   if (!iActive) {
-    return PARAMS_ACT;
+    return ParametersResult::ParamsAct;
   }
 
   uint16_t iTl = iToken.length();
@@ -178,11 +178,11 @@ int8_t ParametersEEPROM::save() {
   uint16_t maxLen = iTl + iDs + 4;
 
   if ( maxLen >= iSize ) {
-    return PARAMS_LEN;
+    return ParametersResult::ParamsLen;
   }
   iData = (uint8_t * ) malloc(iSize);
   if (iData == nullptr) {
-    return PARAMS_MEM;
+    return ParametersResult::ParamsMem;
   }
   clear();
   uint8_t* p = iData;
@@ -255,7 +255,7 @@ int8_t ParametersEEPROM::save() {
 #endif
 #if defined( ARDUINO_ARCH_ESP8266 ) || defined( ARDUINO_ARCH_ESP32 )
   if ( changed ) {
-    if ( !EEPROM.commit() ) rc = PARAMS_ERR; 
+    if ( !EEPROM.commit() ) rc = ParametersResult::ParamsError; 
   }
 #endif
 

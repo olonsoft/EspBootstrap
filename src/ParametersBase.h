@@ -33,15 +33,26 @@
 
 #include <Arduino.h>
 
+enum class ParametersResult {
+  ParamsOk,
+  ParamsError,
+  ParamsLen,
+  ParamsCRC,
+  ParamsTok,
+  ParamsFDE,
+  ParamsMem,
+  ParamsAct  
+};
+
 // Error codes:
-#define PARAMS_OK   0
+/* #define PARAMS_OK   0
 #define PARAMS_ERR  (-1)
 #define PARAMS_LEN  (-2)
 #define PARAMS_CRC  (-3)
 #define PARAMS_TOK  (-4)
 #define PARAMS_FDE  (-5)
 #define PARAMS_MEM  (-98)
-#define PARAMS_ACT  (-99)
+#define PARAMS_ACT  (-99) */
 
 
 class ParametersBase {
@@ -49,9 +60,9 @@ class ParametersBase {
     ParametersBase(const String& aToken);
     virtual ~ParametersBase();
 
-    virtual int8_t          begin() = 0;
-    virtual int8_t          load() = 0;
-    virtual int8_t          save() = 0;
+    virtual ParametersResult  begin() = 0;
+    virtual ParametersResult  load() = 0;
+    virtual ParametersResult  save() = 0;
 
     virtual inline int8_t isActive() {
       return iActive;

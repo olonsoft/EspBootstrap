@@ -72,21 +72,21 @@ static JsonConfigFS JSONConfig;
 #endif
 
 JsonConfigFS::JsonConfigFS() {
-  //  ESP_FS.begin();
+  //  FILESYSTEM.begin();
 }
 
 JsonConfigFS::~JsonConfigFS() {
-  //  ESP_FS.end();
+  //  FILESYSTEM.end();
 }
 
 int8_t JsonConfigFS::parse(const String aUrl, Dictionary& aDict, int aNum) {
   int8_t rc; 
   
-  if ( !ESP_FS.exists(aUrl) ) { // || !LittleFS.isFile(aUrl) ) {
+  if ( !FILESYSTEM.exists(aUrl) ) { // || !LittleFS.isFile(aUrl) ) {
     return JSON_FILENE;
   }
 
-  iF = ESP_FS.open(aUrl, "r");
+  iF = FILESYSTEM.open(aUrl, "r");
   if ( !iF ) {
     return JSON_FILERR;
   }

@@ -41,14 +41,14 @@ class EspBootstrapDict : public EspBootstrapBase {
                 EspBootstrapDict();
     virtual    ~EspBootstrapDict();
   
-    int8_t      run(Dictionary &aDict, uint8_t aNum = 0, uint32_t aTimeout = 10 * BOOTSTRAP_MINUTE);
+    BootstrapResult   run(Dictionary &aDict, uint8_t aNum = 0, uint32_t aTimeout = 10 * BOOTSTRAP_MINUTE);
     void        handleRoot ();
     void        handleSubmit ();
     inline void cancel() { iCancelAP = true; } ;
     
 
   private:
-    int8_t      doRun();
+    BootstrapResult  doRun();
 
     bool        iCancelAP;
     Dictionary* iDict;
@@ -75,7 +75,7 @@ void __espbootstrap_handlesubmit() {
 }
 
 
-int8_t EspBootstrapDict::run(Dictionary &aDict, uint8_t aNum, uint32_t aTimeout) {
+BootstrapResult EspBootstrapDict::run(Dictionary &aDict, uint8_t aNum, uint32_t aTimeout) {
   if (aNum == 0) {
     iNum = aDict.count() - 1;
   }
@@ -93,7 +93,7 @@ int8_t EspBootstrapDict::run(Dictionary &aDict, uint8_t aNum, uint32_t aTimeout)
 }
 
 
-int8_t EspBootstrapDict::doRun() {
+BootstrapResult EspBootstrapDict::doRun() {
 
   String ssid(SSID_PREFIX);
   const IPAddress   APIP   (10, 1, 1, 1);
@@ -120,7 +120,7 @@ int8_t EspBootstrapDict::doRun() {
   yield();
 
   iServer = new WebServer(80);
-  if (iServer == nullptr) return BOOTSTRAP_ERR;
+  if (iServer == nullptr) return BootstrapResult::BootstrapError;
 
   iServer->on("/submit.html", __espbootstrap_handlesubmit);
   iServer->onNotFound(__espbootstrap_handleroot);
@@ -136,7 +136,7 @@ int8_t EspBootstrapDict::doRun() {
         iServer->close();
         delete iServer;
         iServer = nullptr;
-        return BOOTSTRAP_TIMEOUT;
+        return BootstrapResult::BootstrapTimout;
     }
     delay(10);
 //    yield();
@@ -146,7 +146,7 @@ int8_t EspBootstrapDict::doRun() {
   iServer->close();
   delete iServer;
   iServer = nullptr;
-  return (iCancelAP ? BOOTSTRAP_CANCEL: BOOTSTRAP_OK);
+  return (iCancelAP ? BootstrapResult::BootstrapCancel: BootstrapResult::BootstrapOk);
 }
 
 

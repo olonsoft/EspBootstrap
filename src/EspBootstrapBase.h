@@ -48,10 +48,17 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 
-#define BOOTSTRAP_OK        0
-#define BOOTSTRAP_ERR      (-1)
-#define BOOTSTRAP_CANCEL  (-98)
-#define BOOTSTRAP_TIMEOUT (-99)
+enum class BootstrapResult {
+  BootstrapOk,
+  BootstrapError,
+  BootstrapCancel,
+  BootstrapTimout
+};
+
+//#define BOOTSTRAP_OK        0
+//#define BOOTSTRAP_ERR      (-1)
+//#define BOOTSTRAP_CANCEL  (-98)
+//#define BOOTSTRAP_TIMEOUT (-99)
 
 #define BOOTSTRAP_SECOND  1000L
 #define BOOTSTRAP_MINUTE  60000L
@@ -62,10 +69,10 @@ class EspBootstrapBase {
     virtual ~EspBootstrapBase();
 
   protected:
-    int8_t            iAllDone;
-    WebServer*        iServer;
-    uint8_t           iNum;
-    uint32_t          iTimeout;
+    bool            iAllDone;
+    WebServer*      iServer;
+    uint8_t         iNum;
+    uint32_t        iTimeout;
 };
 
 

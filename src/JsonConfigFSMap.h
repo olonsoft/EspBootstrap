@@ -37,13 +37,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #if defined( ARDUINO_ARCH_ESP8266 )
 #include <FS.h>
 #include <LittleFS.h>
-#define ESP_FS LittleFS
+#define FILESYSTEM LittleFS
 #endif
 
 #if defined( ARDUINO_ARCH_ESP32 )
 #include <FS.h>
 #include <LITTLEFS.h>
-#define ESP_FS LITTLEFS
+#define FILESYSTEM LITTLEFS
 #endif
 
 
@@ -79,11 +79,11 @@ JsonConfigFSMap::~JsonConfigFSMap() {}
 int8_t JsonConfigFSMap::parse(const String aUrl, char** aMap, int aNum) {
   int8_t rc; 
   
-  if ( !ESP_FS.exists(aUrl) ) { // || !ESP_FS.isFile(aUrl) ) {
+  if ( !FILESYSTEM.exists(aUrl) ) { // || !FILESYSTEM.isFile(aUrl) ) {
     return JSON_FILENE;
   }
 
-  iF = ESP_FS.open(aUrl, "r");
+  iF = FILESYSTEM.open(aUrl, "r");
   if ( !iF ) {
     return JSON_FILERR;
   }

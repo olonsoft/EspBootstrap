@@ -54,7 +54,7 @@
 //  #define PWD1  "your password"
 #include "home_wifi_multi.h"
 
-FS* filesystem = &SPIFFS;
+FS* filesystem = &FILESYSTEM;
 WebServer server(80);
 File fsUploadFile;
 

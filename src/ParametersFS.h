@@ -115,7 +115,7 @@ int8_t ParametersFS::save() {
 
 
 void ParametersFS::clear () {
-  ESP_FS.remove(iFile);
+  FILESYSTEM.remove(iFile);
 }
 
 #endif // _ParametersFS_H_

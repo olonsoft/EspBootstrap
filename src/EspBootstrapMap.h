@@ -41,14 +41,14 @@ class EspBootstrapMap : public EspBootstrapBase {
     EspBootstrapMap();
     virtual ~EspBootstrapMap();
 
-    int8_t    run(const char** aTitles, char** aMap, uint8_t aNum, uint32_t aTimeout = 10 * BOOTSTRAP_MINUTE);
+    BootstrapResult    run(const char** aTitles, char** aMap, uint8_t aNum, uint32_t aTimeout = 10 * BOOTSTRAP_MINUTE);
     void      handleRoot ();
     void      handleSubmit ();
     inline void cancel() { iCancelAP = true; } ;
 
 
   private:
-    int8_t            doRun();
+    BootstrapResult   doRun();
 
     bool              iCancelAP;
     const char**      iTitles;
@@ -76,7 +76,7 @@ void __espbootstrap_handlesubmit() {
 }
 
 
-int8_t EspBootstrapMap::run(const char** aTitles, char** aMap, uint8_t aNum, uint32_t aTimeout) {
+BootstrapResult EspBootstrapMap::run(const char** aTitles, char** aMap, uint8_t aNum, uint32_t aTimeout) {
 
   iNum = aNum;
   iTitles = aTitles;
@@ -88,7 +88,7 @@ int8_t EspBootstrapMap::run(const char** aTitles, char** aMap, uint8_t aNum, uin
 }
 
 
-int8_t EspBootstrapMap::doRun() {
+BootstrapResult EspBootstrapMap::doRun() {
 
   String ssid(SSID_PREFIX);
   const IPAddress   APIP   (10, 1, 1, 1);
@@ -115,7 +115,7 @@ int8_t EspBootstrapMap::doRun() {
   yield();
 
   iServer = new WebServer(80);
-  if (iServer == nullptr) return BOOTSTRAP_ERR;
+  if (iServer == nullptr) return BootstrapResult::BootstrapError;
 
   iServer->on("/submit.html", __espbootstrap_handlesubmit);
   iServer->onNotFound(__espbootstrap_handleroot);
@@ -131,7 +131,7 @@ int8_t EspBootstrapMap::doRun() {
         iServer->close();
         delete iServer;
         iServer = nullptr;
-        return BOOTSTRAP_TIMEOUT;
+        return BootstrapResult::BootstrapTimout;
     }
     delay(10);
 //    yield();
@@ -141,7 +141,7 @@ int8_t EspBootstrapMap::doRun() {
   iServer->close();
   delete iServer;
   iServer = nullptr;
-  return (iCancelAP ? BOOTSTRAP_CANCEL: BOOTSTRAP_OK);
+  return (iCancelAP ? BootstrapResult::BootstrapCancel: BootstrapResult::BootstrapOk);
 }
 
 
