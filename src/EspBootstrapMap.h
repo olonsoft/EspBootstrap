@@ -131,7 +131,7 @@ BootstrapResult EspBootstrapMap::doRun() {
         iServer->close();
         delete iServer;
         iServer = nullptr;
-        return BootstrapResult::BootstrapTimout;
+        return BootstrapResult::BootstrapTimeout;
     }
     delay(10);
 //    yield();

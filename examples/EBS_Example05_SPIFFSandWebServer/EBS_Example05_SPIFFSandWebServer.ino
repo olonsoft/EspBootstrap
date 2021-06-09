@@ -63,7 +63,7 @@ const String TOKEN(CTOKEN);
 // Create dictionary object and parameters object
 // to be stored on the filesystem
 Dictionary d;
-ParametersSPIFFS p(TOKEN, d);
+ParametersFS p(TOKEN, d);
 
 
 // Utility method to print contents of a dictionary

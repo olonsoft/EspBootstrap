@@ -52,7 +52,7 @@ enum class BootstrapResult {
   BootstrapOk,
   BootstrapError,
   BootstrapCancel,
-  BootstrapTimout
+  BootstrapTimeout
 };
 
 //#define BOOTSTRAP_OK        0

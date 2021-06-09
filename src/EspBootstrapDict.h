@@ -100,7 +100,8 @@ BootstrapResult EspBootstrapDict::doRun() {
   const IPAddress   APMASK (255, 255, 255, 0);
 
   WiFi.disconnect();
-  WiFi.mode(WIFI_AP);
+  //WiFi.mode(WIFI_AP);
+  WiFi.enableAP(true);
 
   ssid += WiFi.macAddress();
   ssid.replace(":", "");
@@ -136,7 +137,7 @@ BootstrapResult EspBootstrapDict::doRun() {
         iServer->close();
         delete iServer;
         iServer = nullptr;
-        return BootstrapResult::BootstrapTimout;
+        return BootstrapResult::BootstrapTimeout;
     }
     delay(10);
 //    yield();
